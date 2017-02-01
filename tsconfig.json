@@ -1,0 +1,38 @@
+{
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "noEmitHelpers": true,
+    "paths": {
+      "*": [
+        "*",
+        "src/client/services/*",
+        "src/client/resources/*",
+        "src/client/components/*",
+        "src/client/redux/*"
+      ]
+    }
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": false,
+    "emitRequireType": false
+  },
+  "types": [
+    "core-js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

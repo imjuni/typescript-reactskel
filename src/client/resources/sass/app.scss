@@ -1,0 +1,32 @@
+$navbar-height: 50px;
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  font-family: "Noto Sans Korean", "Lucida Grande";
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  position: relative;
+}
+
+.navbar-with-content-container {
+  position: absolute;
+  top: 0;
+  padding: {
+    top: $navbar-height + 20px;
+    left: 30px;
+    right: 30px;
+  }
+  width: 100vw;
+  height: 100vh;
+}
+
+.element-spacer {
+  height: 30px;
+}
