@@ -1,4 +1,4 @@
-import Action from "actions/Action";
+import Action from "../actions/Action";
 
 export const CHANGE_LOCALE: string = "CHANGE_LOCALE";
 export interface IChangeLocale {

@@ -7,7 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WebpackConfigUtil = require('./webpack.config.util');
 
-const deployPath = 'public';
+const deployPath = 'dist';
 
 const loaderConfig = {
   babel: {
@@ -23,7 +23,7 @@ const config = {
 
   entry: path.resolve(__dirname, './src/client/Container.tsx'),
   output: {
-    path: path.resolve(__dirname, `./${deployPath}`),
+    path: path.resolve(__dirname, `./${deployPath}/client`),
     filename: '[name].[hash].bundle.js',
     sourceMapFilename: '[name].[hash].bundle.js.map',
     publicPath: '/',
@@ -48,9 +48,8 @@ const config = {
         excludes: [ /node_modules/, './src/server/**' ],
       },
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
+        test: /\.ts(x?)$/,
+        loader: 'ts-loader?configFileName=tsconfig.client.json',
       },
       {
         test: /\.jsx?$/,

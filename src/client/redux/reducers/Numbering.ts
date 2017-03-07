@@ -1,4 +1,4 @@
-import { RANDOM_NUMBER_UPDATE, IRandomNumberUpdateAction } from "actions/Numbering";
+import { RANDOM_NUMBER_UPDATE, IRandomNumberUpdateAction } from "../actions/Numbering";
 
 const initValue: INumberingProps = {
   randomNumber: 0,

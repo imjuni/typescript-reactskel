@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "./node_modules/.bin/rimraf dist",
+    "clean:client": "./node_modules/.bin/rimraf dist/client",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "NODE_ENV=develop ./node_modules/.bin/webpack-dev-server --progress",
-    "build:client": "NODE_ENV=develop ./node_modules/.bin/webpack -p --progress --config ./webpack.config.js",,
-    "build:client:prod": "NODE_ENV=production ./node_modules/.bin/webpack -p --progress --config ./webpack.config.prod.js",,
+    "client": "NODE_ENV=develop ./node_modules/.bin/webpack-dev-server --config ./webpack.config.client.js --progress --hot --open",
+    "build:client": "NODE_ENV=develop ./node_modules/.bin/webpack -p --progress --config ./webpack.config.client.js",
+    "build:client:prod": "NODE_ENV=production ./node_modules/.bin/webpack -p --progress --config ./webpack.config.client.prod.js",
     "server": "NODE_ENV=develop nodemon --watch ./src/server/**.ts --exec ts-node ./src/server/app.ts",
-    "typings": "./node_modules/.bin/typings"
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,7 @@
   "homepage": "https://github.com/imjuni/typescript-reactskel#readme",
   "devDependencies": {
     "@blueprintjs/core": "^1.6.0",
-    "@types/node": "^7.0.4",
+    "@types/node": "^7.0.5",
     "@types/react": "^15.0.0",
     "@types/react-dom": "^0.14.20",
     "@types/react-intl": "^2.2.1",
@@ -32,9 +34,7 @@
     "@types/react-router-redux": "^4.0.39",
     "@types/redux": "^3.6.0",
     "@types/reselect": "^2.0.27",
-    "@types/whatwg-fetch": "0.0.33",
     "autoprefixer": "^6.6.1",
-    "awesome-typescript-loader": "^3.0.0-beta.18",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-react-transform": "^2.0.2",
@@ -93,19 +93,20 @@
     "react-transform-hmr": "^1.0.4",
     "redux": "^3.6.0",
     "reselect": "^2.5.4",
+    "rimraf": "^2.6.1",
     "sass-loader": "^4.1.1",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",
     "ts-helpers": "^1.1.2",
     "ts-loader": "^2.0.0",
-    "tslint": "^4.4.2",
+    "tslint": "^4.5.1",
     "tslint-loader": "^3.3.0",
-    "typescript": "^2.1.5",
-    "typings": "^2.1.0",
+    "typescript": "^2.2.1",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2",
     "webpack-stream": "^3.2.0",
     "whatwg-fetch": "^2.0.2"
-  }
+  },
+  "dependencies": {}
 }

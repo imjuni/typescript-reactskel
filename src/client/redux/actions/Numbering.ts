@@ -1,4 +1,4 @@
-import Action from "actions/Action";
+import Action from "../actions/Action";
 
 export const RANDOM_NUMBER_UPDATE: string = "RANDOM_NUMBER_UPDATE";
 export interface IRandomNumberUpdate {

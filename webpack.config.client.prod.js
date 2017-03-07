@@ -7,7 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const devConfig = require('./webpack.config');
 
 const config = Object.assign({}, devConfig, {
-  devtool: 'cheap-module-source-map',
+  devtool: false,
 
   plugins: [
     new webpack.DefinePlugin({
@@ -16,7 +16,7 @@ const config = Object.assign({}, devConfig, {
       },
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/front/index.html'),
+      template: path.resolve(__dirname, './src/client/index.html'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,

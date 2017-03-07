@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { addLocaleData } from "react-intl";
 import * as en from "react-intl/locale-data/en";
 import * as ko from "react-intl/locale-data/ko";
-import reducer from "reducers/Reducer";
+import reducer from "./redux/reducers/Reducer";
 import "font-awesome/css/font-awesome.min.css";
 import "ionicons/dist/css/ionicons.min.css";
 import "font/NotoSansKR-Hestia/stylesheets/NotoSansKR-Hestia.css";

@@ -1,5 +1,5 @@
-import { CHANGE_LOCALE, IChangeLocaleAction } from "actions/Locale";
-import { LOCALE } from "config/ConfigKeys";
+import { CHANGE_LOCALE, IChangeLocaleAction } from "../actions/Locale";
+import { LOCALE } from "../../services/config/ConfigKeys";
 
 interface IMessageProps {
   [messageId: string]: string;

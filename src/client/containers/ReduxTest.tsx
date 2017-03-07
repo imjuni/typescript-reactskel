@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { INumberingProps } from "reducers/Numbering";
-import { randomNumberUpdate } from "actions/Numbering";
-import logger from "util/Logger";
+import { INumberingProps } from "../redux/reducers/Numbering";
+import { randomNumberUpdate } from "../redux/actions/Numbering";
+import logger from "../services/util/Logger";
 
 interface IStateProps {
   numbering: INumberingProps;

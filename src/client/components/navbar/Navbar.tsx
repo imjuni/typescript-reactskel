@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { Link } from "react-router";
 import { Popover, Menu, MenuItem, Position } from "@blueprintjs/core";
-import { changeLocale } from "actions/Locale";
+import { changeLocale } from "../../redux/actions/Locale";
 
 interface IDispatchProps {
   changeLocale(locale: string);
