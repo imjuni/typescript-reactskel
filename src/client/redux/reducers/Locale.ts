@@ -1,5 +1,5 @@
-import { CHANGE_LOCALE, IChangeLocaleAction } from "../actions/Locale";
-import { LOCALE } from "../../services/config/ConfigKeys";
+import { CHANGE_LOCALE, IChangeLocaleAction } from '../actions/Locale';
+import { LOCALE } from '../../services/config/ConfigKeys';
 
 interface IMessageProps {
   [messageId: string]: string;
@@ -11,10 +11,10 @@ export interface ILocaleProps {
 }
 
 const initValue: ILocaleProps = {
-  locale: ((locale) => { return (locale) ? locale : "ko"; })(localStorage.getItem(LOCALE)),
+  locale: ((locale) => { return (locale) ? locale : 'ko'; })(localStorage.getItem(LOCALE)),
 };
 
-export default function localeReducer(state = initValue, action: IChangeLocaleAction) {
+export function localeReducer(state = initValue, action: IChangeLocaleAction) {
   switch (action.type) {
     case CHANGE_LOCALE:
       localStorage.setItem(LOCALE, action.value.locale);

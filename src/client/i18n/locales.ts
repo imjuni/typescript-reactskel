@@ -1,5 +1,5 @@
-import en from "./en";
-import ko from "./ko";
+import en from './en';
+import ko from './ko';
 
 const locales = {};
 
