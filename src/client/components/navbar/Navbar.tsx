@@ -1,9 +1,11 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { FormattedMessage } from "react-intl";
-import { Link } from "react-router";
-import { Popover, Menu, MenuItem, Position } from "@blueprintjs/core";
-import { changeLocale } from "../../redux/actions/Locale";
+import * as React from 'react';
+import {
+  Link,
+} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { Popover, Menu, MenuItem, Position } from '@blueprintjs/core';
+import { changeLocale } from '../../redux/actions/Locale';
 
 interface IDispatchProps {
   changeLocale(locale: string);
@@ -29,8 +31,8 @@ class Navbar extends React.Component<INavbarProps, any> {
   createi18nMenu(): JSX.Element {
     return (
       <Menu>
-        <MenuItem text="ko" onClick={this.handleChangeLocale("ko")} />
-        <MenuItem text="en" onClick={this.handleChangeLocale("en")} />
+        <MenuItem text="ko" onClick={this.handleChangeLocale('ko')} />
+        <MenuItem text="en" onClick={this.handleChangeLocale('en')} />
       </Menu>
     );
   }
@@ -62,4 +64,5 @@ class Navbar extends React.Component<INavbarProps, any> {
   }
 }
 
-export default connect<any, IDispatchProps, any>(null, mapDispatchToProps)(Navbar);
+const connected = connect<any, IDispatchProps, any>(null, mapDispatchToProps)(Navbar);
+export { connected as Navbar };

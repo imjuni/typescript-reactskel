@@ -1,36 +1,36 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 const path = require('path');
-const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackConfigUtil = require('./webpack.config.util');
+
+/*
+ * ExtractTextPlugin을 사용할 때 오류가 발생한다.
+ */
+
+const extractStyle = new ExtractTextPlugin({
+  filename: '[name].[hash].css',
+  disable: false,
+  ignoreOrder: true,
+});
 
 const deployPath = 'dist';
 
-const loaderConfig = {
-  babel: {
-    query: {
-      presets: ['react', 'latest', 'stage-0'],
-      plugins: ['transform-runtime', 'transform-decorators-legacy', 'transform-class-properties'],
-    },
-  },
-};
-
 const config = {
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
 
-  entry: path.resolve(__dirname, './src/client/Container.tsx'),
+  entry: path.resolve(__dirname, './src/client/client.tsx'),
+
   output: {
     path: path.resolve(__dirname, `./${deployPath}/client`),
     filename: '[name].[hash].bundle.js',
     sourceMapFilename: '[name].[hash].bundle.js.map',
     publicPath: '/',
   },
+
   resolve: {
-    extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
-    modulesDirectories: [
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    modules: [
       'web_modules',
       'node_modules',
       './src/client/services',
@@ -40,63 +40,84 @@ const config = {
       './src/client/components',
     ],
   },
+
   module: {
-    loaders: [
-      {
+    rules: [
+      { // 0
         test: /\.tsx?$/,
-        loader: 'tslint',
-        excludes: [ /node_modules/, './src/server/**' ],
+        enforce: 'pre',
+        exclude: [/node_modules/, './src/server/**'],
+        loader: 'tslint-loader',
       },
-      {
-        test: /\.ts(x?)$/,
-        loader: 'ts-loader?configFileName=tsconfig.client.json',
+      { // 1
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        query: {
+          configFileName: 'tsconfig.client.json',
+        },
       },
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loaders: [WebpackConfigUtil.loaderConfigToString('babel', loaderConfig), 'eslint-loader'],
-        babelrc: false,
-      },
-      {
+      { // 2
         test: /\.(ttf|otf|eot|svg|woff(2)?)(\?.+)?$/,
         loader: 'file-loader',
       },
-      {
+      { // 3
         test: /\.(png|jpg|jpeg|gif)$/,
         loader: 'file-loader',
       },
-      {
+      { // 4
         test: /\.json$/,
         loader: 'json',
       },
-      {
+      { // 5
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss', { publicPath: '' }),
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          'postcss-loader',
+        ],
       },
-      {
+      { // 6
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass?sourceMap', { publicPath: '' }),
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
       },
     ],
   },
 
-  postcss: [
-    autoprefixer,
-  ],
-
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: process.env.NODE_ENV,
+    }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'tsskel',
+      minChunks: Infinity,
+      filename: 'tsskel.bundle.js',
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/client/index.html'),
     }),
-    new ExtractTextPlugin('[name].[hash].css', { disable: false }),
-    new CopyWebpackPlugin([{ from: `${__dirname}/src/client` }]),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    extractStyle,
   ],
 
   externals: {
@@ -107,13 +128,8 @@ const config = {
     'react/lib/ReactContext': true,
   },
 
-  eslint: {
-    configFile: './.eslintrc.js',
-  },
-
   devServer: {
     contentBase: `./${deployPath}`,
-    colors: true,
     historyApiFallback: true,
     port: process.env.PORT || 32289,
     inline: true,
