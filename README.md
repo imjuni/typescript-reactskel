@@ -1,16 +1,14 @@
-TypeScript Webpack, React Scaffolding Project (typescript-reactskel)
+TypeScript, React Starter-Kit
 ====
 
 # Introduction
-This project is scaffolding for TypeScript & React, Webpack.
+This is starter-kit for TypeScript with React Starter-Kit.
 
 # Feature
  * TypeScript
-   * Include ts-loader & awesome-typescript-loader
  * React
-   * react
    * react-router
    * react-intl
    * redux
      * react-redux
-     * react-router-redux
+ * Webpack2

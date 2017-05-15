@@ -26,12 +26,15 @@ function mapStateToProps(state: any): ILocaleProps {
   const locale: string = state.locale.locale;
 
   if (prevLocale && prevLocale !== locale) {
-    setTimeout(() => {
-      // This is walkaround solution. Because This version IntlProvider don't have
-      // render method. Therefore can't trigger children render method.
-      // At this time, reload page.
-      window.location.reload();
-    }, 100);
+    setTimeout(
+      () => {
+        // This is walkaround solution. Because This version IntlProvider don't have
+        // render method. Therefore can't trigger children render method.
+        // At this time, reload page.
+        window.location.reload();
+      },
+      100,
+    );
   }
 
   prevLocale = locale;

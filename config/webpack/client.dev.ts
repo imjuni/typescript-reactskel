@@ -1,12 +1,10 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-const path = require('path');
-const webpack = require('webpack');
+import * as path from 'path';
+import * as webpack from 'webpack';
+
+/* tslint:disable variable-name */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-/*
- * ExtractTextPlugin을 사용할 때 오류가 발생한다.
- */
+/* tslint:disable variable-name */
 
 const extractStyle = new ExtractTextPlugin({
   filename: '[name].[hash].css',
@@ -14,12 +12,14 @@ const extractStyle = new ExtractTextPlugin({
   ignoreOrder: true,
 });
 
-const deployPath = 'dist';
+const rootPath = path.resolve(__dirname, '../..');
+const deployPath = path.resolve(path.join(rootPath, 'dist', 'client'));
+const clientPackage = require('../../package.json');
 
 const config = {
   devtool: 'source-map',
 
-  entry: path.resolve(__dirname, './src/client/client.tsx'),
+  entry: path.resolve(rootPath, 'src/client/client.tsx'),
 
   output: {
     path: path.resolve(__dirname, `./${deployPath}/client`),
@@ -29,7 +29,7 @@ const config = {
   },
 
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     modules: [
       'web_modules',
       'node_modules',
@@ -46,14 +46,22 @@ const config = {
       { // 0
         test: /\.tsx?$/,
         enforce: 'pre',
-        exclude: [/node_modules/, './src/server/**'],
+        exclude: [
+          /node_modules/,
+          './src/server/**',
+          /webpack.config.*.ts/,
+        ],
         loader: 'tslint-loader',
       },
       { // 1
         test: /\.tsx?$/,
         loader: 'ts-loader',
+        exclude: [
+          /node_modules/,
+          './src/server/**',
+        ],
         query: {
-          configFileName: 'tsconfig.client.json',
+          configFileName: path.resolve(rootPath, 'config/tsconfig/client.dev.json'),
         },
       },
       { // 2
@@ -70,43 +78,26 @@ const config = {
       },
       { // 5
         test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          'postcss-loader',
-        ],
+        use: extractStyle.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader'],
+        }),
       },
       { // 6
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
-          },
-        ],
+        use: extractStyle.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader', 'sass-loader'],
+        }),
       },
     ],
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV,
+    new webpack.DefinePlugin({
+      __VERSION__: clientPackage.version,
     }),
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
@@ -115,7 +106,7 @@ const config = {
       filename: 'tsskel.bundle.js',
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/client/index.html'),
+      template: path.resolve(rootPath, 'src/client/index.html'),
     }),
     extractStyle,
   ],

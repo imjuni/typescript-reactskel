@@ -1,12 +1,12 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-const path = require('path');
+import * as path from 'path';
+import * as webpack from 'webpack';
+
 const autoprefixer = require('autoprefixer');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackConfigUtil = require('./webpack.config.util');
 const nodeExternals = require('webpack-node-externals');
+
+/* tslint:disable variable-name */
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+/* tslint:enable variable-name */
 
 const deployPath = 'dist';
 
@@ -38,7 +38,7 @@ const config = [
       __filename: false,
       __dirname: false,
     },
-    externals: nodeExternals(),
+    externals: [nodeExternals()],
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
